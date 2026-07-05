@@ -1,0 +1,46 @@
+# Obsidian Bases 实时视图（1.12+）：按平面浏览 atoms。人侧筛选用，无生成漂移。
+# 语法如与所装 Obsidian 版本有出入，在 App 内微调即可（本文件属定义层，微调诉求回流中枢）。
+filters:
+  and:
+    - file.inFolder("kb/atoms")
+views:
+  - type: table
+    name: business
+    filters:
+      and:
+        - planes.contains("business")
+    order:
+      - file.name
+      - domain
+      - status
+      - summary
+  - type: table
+    name: application
+    filters:
+      and:
+        - planes.contains("application")
+    order:
+      - file.name
+      - domain
+      - status
+      - summary
+  - type: table
+    name: data
+    filters:
+      and:
+        - planes.contains("data")
+    order:
+      - file.name
+      - domain
+      - status
+      - summary
+  - type: table
+    name: deployment
+    filters:
+      and:
+        - planes.contains("deployment")
+    order:
+      - file.name
+      - domain
+      - status
+      - summary

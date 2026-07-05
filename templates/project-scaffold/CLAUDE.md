@@ -7,4 +7,4 @@ generated_by: system-arch-base@<commit>/templates/project-scaffold/CLAUDE.md
 
 先读 **`AGENTS.md`**（治理权威）。人类速览看 `HUMAN-GUIDE.md`。
 
-四个入口：`/arch-change`（干活）· `/arch-decide`（裁决）· `/arch-gate`（过门禁）· `/arch-status`（查状态）。
+五个入口：`/kb-ingest`（材料入库）· `/arch-change`（干活）· `/arch-decide`（裁决）· `/arch-gate`（过门禁）· `/arch-status`（查状态）。知识问答不走入口——按 AGENTS §KB 读取协议直接答。

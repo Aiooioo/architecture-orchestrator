@@ -23,7 +23,9 @@ generated_by: system-arch-base@<commit>/templates/project-scaffold/HUMAN-GUIDE.m
 
 ## 3. 给输入
 
-新需求、新约束、事故、想法——直接在会话里说，agent 会经 `/arch-change` 落成工作产品的变更，拿不准的自动进 OQ 队列等你裁。
+新需求、新约束、事故、想法——直接在会话里说，agent 会经 `/arch-change` 落成工作产品的变更，拿不准的自动进 OQ 队列等你裁。手里有现成材料（事故报告/文档/纪要）就说"把这个吃进去"（`/kb-ingest`），它会沉淀成知识库事实。
+
+**随时提问**：想了解系统现状（"X 部署在哪""改 Y 会波及什么"）直接问，agent 从知识库带引用作答。想自己浏览：用 Obsidian 打开本仓库——graph 视图看全景、`kb/bases/` 里有现成的筛选表格、`kb/mocs/` 的 MOC 页可直接改成汇报底稿。
 
 ---
 

@@ -1,8 +1,8 @@
 ---
 version: 1
-status: active
+status: deprecated
 supersedes: null
-superseded_by: null
+superseded_by: cycle-charter.v2.md
 created: 2026-07-05
 kind: cycle-charter-template
 ---
@@ -17,7 +17,7 @@ cycle: CYC-001
 slug: <kebab-slug>
 status: proposed        # proposed | open | closed
 created: <date>
-updated: <date>
+updated: 2026-07-05
 affected_wps:           # GC 门禁的动态必备矩阵（gate.py 解析）
   - wp: component-model
     target_version: 3   # 本周期要产出的版本号

@@ -1,0 +1,16 @@
+# Obsidian Bases 实时视图：技术债与约束清单（kind=debt/constraint），汇报与周期规划用。
+filters:
+  and:
+    - file.inFolder("kb/atoms")
+    - or:
+        - 'kind == "debt"'
+        - 'kind == "constraint"'
+views:
+  - type: table
+    name: debt-and-constraints
+    order:
+      - domain
+      - kind
+      - status
+      - file.name
+      - summary

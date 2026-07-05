@@ -15,6 +15,10 @@ definition:
   - { source: templates/project-scaffold/.claude/skills/arch-decide/SKILL.md, target: .claude/skills/arch-decide/SKILL.md }
   - { source: templates/project-scaffold/.claude/skills/arch-gate/SKILL.md,   target: .claude/skills/arch-gate/SKILL.md }
   - { source: templates/project-scaffold/.claude/skills/arch-status/SKILL.md, target: .claude/skills/arch-status/SKILL.md }
+  - { source: templates/project-scaffold/.claude/skills/kb-ingest/SKILL.md,   target: .claude/skills/kb-ingest/SKILL.md }
+  - { source: templates/project-scaffold/.claude/agents/kb-retriever.md,      target: .claude/agents/kb-retriever.md }
+  - { source: templates/project-scaffold/.claude/agents/kb-extractor.md,      target: .claude/agents/kb-extractor.md }
+  - { source: tools/kb-index.py,                                              target: tools/kb-index.py }
   # 模板（arch-change/arch-gate 的实例化来源）
   - { source: templates/work-products/system-context.v1.md,        target: templates/work-products/system-context.v1.md }
   - { source: templates/work-products/architecture-overview.v1.md, target: templates/work-products/architecture-overview.v1.md }
@@ -24,12 +28,20 @@ definition:
   - { source: templates/work-products/key-scenario.v1.md,          target: templates/work-products/key-scenario.v1.md }
   - { source: templates/work-products/architectural-decision.v1.md, target: templates/work-products/architectural-decision.v1.md }
   - { source: templates/work-products/evolution-roadmap.v1.md,     target: templates/work-products/evolution-roadmap.v1.md }
-  - { source: templates/cycles/cycle-charter.v1.md,                target: templates/cycles/cycle-charter.v1.md }
-  - { source: templates/gates/gate-g0-baseline.v1.md,              target: templates/gates/gate-g0-baseline.v1.md }
+  - { source: templates/work-products/domain-map.v1.md,            target: templates/work-products/domain-map.v1.md }
+  - { source: templates/cycles/cycle-charter.v2.md,                target: templates/cycles/cycle-charter.v2.md }
+  - { source: templates/gates/gate-g0-baseline.v2.md,              target: templates/gates/gate-g0-baseline.v2.md }
   - { source: templates/gates/gate-g1-context.v1.md,               target: templates/gates/gate-g1-context.v1.md }
   - { source: templates/gates/gate-g2-design.v1.md,                target: templates/gates/gate-g2-design.v1.md }
   - { source: templates/gates/gate-g3-release.v1.md,               target: templates/gates/gate-g3-release.v1.md }
-  - { source: templates/gates/gate-gc-cycle.v1.md,                 target: templates/gates/gate-gc-cycle.v1.md }
+  - { source: templates/gates/gate-gc-cycle.v2.md,                 target: templates/gates/gate-gc-cycle.v2.md }
+  # kb 模板与视图
+  - { source: templates/kb/atom.v1.md,                             target: templates/kb/atom.v1.md }
+  - { source: templates/kb/domain-moc.v1.md,                       target: templates/kb/domain-moc.v1.md }
+  - { source: templates/kb/plane-moc.v1.md,                        target: templates/kb/plane-moc.v1.md }
+  - { source: templates/kb/bases/atoms-by-plane.base,              target: kb/bases/atoms-by-plane.base }
+  - { source: templates/kb/bases/atoms-stale.base,                 target: kb/bases/atoms-stale.base }
+  - { source: templates/kb/bases/debt.base,                        target: kb/bases/debt.base }
   - { source: templates/gates/perspectives/security.md,            target: templates/gates/perspectives/security.md }
   - { source: templates/gates/perspectives/performance.md,         target: templates/gates/perspectives/performance.md }
   - { source: templates/gates/perspectives/operability.md,         target: templates/gates/perspectives/operability.md }
@@ -37,6 +49,7 @@ definition:
   - { source: templates/gates/handoff-manifest.yaml,               target: templates/gates/handoff-manifest.yaml }
 
 state_seed:
+  - { source: templates/kb/taxonomy.md,                  target: kb/_meta/taxonomy.md }
   - { source: templates/project-scaffold/project.yaml,   target: project.yaml }
   - { source: templates/project-scaffold/README.md,      target: README.md }
   - { source: templates/project-scaffold/REPOS.md,       target: REPOS.md }
@@ -45,6 +58,10 @@ state_seed:
   - { source: templates/project-scaffold/LEDGER.md,      target: LEDGER.md }
 
 state_dirs:   # init 时创建空目录（.gitkeep），全部为状态层
+  - kb/atoms
+  - kb/mocs
+  - kb/_raw
+  - work-products/00-domain-map
   - work-products/01-system-context
   - work-products/02-architecture-overview
   - work-products/03-component-model

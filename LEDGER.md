@@ -40,6 +40,30 @@
 - decision: `arch-change/decide/gate/status` 的 SKILL.md 存于 `templates/project-scaffold/.claude/skills/`（投影源）；中枢 `.claude/skills/` 只放 `arch-init`。
 - why: 中枢与 scaffold 各存一份必然漂移（违 C3）；这些技能也不该在中枢会话被触发。
 
+### MD-007 · product 剖面重构为渐进式摸底
+- status: decided
+- date: 2026-07-05
+- decision: G0 瘦身为 bootstrap 门（签"划分与负空间"）；摸底 = baseline 型周期按域切片；change 型周期受覆盖规则机检约束；domain-map（WP-9）为覆盖台账（滚动文档）。
+- why: 复杂 SaaS 的全量摸底是大爆炸式前置成本；Karpathy LLM Wiki 的增量编译思路 + 生态 frontier 负空间模式证明"索引先行、按需生长"可行。摸到哪改到哪，但绝不在盲区做设计决策。
+
+### MD-008 · 事实层/观点层分离 + Obsidian 原生存储
+- status: decided
+- date: 2026-07-05
+- decision: kb atoms（事实，单写者、新鲜度语义）与 WP/AD（判断，人签核）分离；存储采用 Obsidian 原生约定——wikilink typed edges、MOC（策展+围栏生成）、Bases 实时视图、受控词表、断言级溯源 ^[inferred]、[!contradiction]→OQ。
+- why: 架构知识是 plane×domain 矩阵，文件树单轴不够——单一物理主轴（domain）+ facet + 生成投影守 C1/C3；2026 Obsidian agent-KB 实践证明 wikilink 图谱人机两用，Bases 消灭视图漂移。
+
+### MD-009 · KB 刻意不采用的技术（AD 级裁定）
+- status: decided
+- date: 2026-07-05
+- decision: 不用图数据库/Obsidian 专有插件依赖/MCP server/文件锁/wiki-query 式检索入口。
+- why: 单机+git 可 diff+确定性可校验前提下，markdown+生成式 JSON 索引帕累托最优；图库引入不可 diff 的第二真相（违 C3）；单写者纪律结构性消灭并发写；检索是工具不是目的（EF-10）。MCP 留作跨应用场景可选项。
+
+### MD-010 · KB 接口设计四原则
+- status: decided
+- date: 2026-07-05
+- decision: 入口=skill 动词（新增 /kb-ingest，共 5 项目入口）；能力=入口内部管线（ingest 四段两入口共享一份实现）；并发与隔离=只读 subagent（extractor/retriever/panel）；检索=分层协议非入口。
+- why: MECE 治入口不治能力（EF-10）；守卫焊进完成定义（M1：触 atoms 必跑 kb-index.py）；单写者防冲突。
+
 ## 待决
 
 （无）

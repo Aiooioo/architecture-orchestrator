@@ -1,0 +1,14 @@
+# Obsidian Bases 实时视图：陈旧与待验证 atoms（refresh 周期的候选清单）。
+filters:
+  and:
+    - file.inFolder("kb/atoms")
+    - 'status != "verified"'
+views:
+  - type: table
+    name: stale-or-observed
+    order:
+      - status
+      - last-verified
+      - domain
+      - file.name
+      - summary

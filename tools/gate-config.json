@@ -6,6 +6,7 @@
   "decision_status_enum": ["proposed", "decided", "superseded"],
   "required_oq_fields_when_open": ["severity", "scope", "options", "recommend"],
   "wp_dirs": {
+    "domain-map": "work-products/00-domain-map",
     "system-context": "work-products/01-system-context",
     "architecture-overview": "work-products/02-architecture-overview",
     "component-model": "work-products/03-component-model",
@@ -60,13 +61,9 @@
     "product": {
       "G0": {
         "prereq": null,
-        "requires": {
-          "system-context": "review", "architecture-overview": "review",
-          "component-model": "review", "operational-model": "review",
-          "nfr-catalog": "review", "evolution-roadmap": "draft"
-        },
-        "promote": ["system-context", "architecture-overview", "component-model", "operational-model", "nfr-catalog"],
-        "promote_to": "released",
+        "requires": { "domain-map": "review", "system-context": "review" },
+        "promote": ["domain-map", "system-context"],
+        "promote_to": "baselined",
         "proposed_ad": "warn"
       },
       "GC": {

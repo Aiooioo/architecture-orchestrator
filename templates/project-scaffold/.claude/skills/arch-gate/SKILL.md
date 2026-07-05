@@ -14,9 +14,10 @@ generated_by: system-arch-base@<commit>/templates/project-scaffold/.claude/skill
 
 ## 步骤
 
-1. **定门**：由 LEDGER 最后一条 GATE 记录 + `project.yaml` mode 推导本次该过哪个门（engagement: G1→G2→G3；product: G0→GC(CYC-NNN)）。GC 需指明周期号。与人确认。
+1. **定门**：由 LEDGER 最后一条 GATE 记录 + `project.yaml` mode 推导本次该过哪个门（engagement: G1→G2→G3；product: G0 bootstrap→GC(CYC-NNN) 循环）。GC 需指明周期号与章程 kind（baseline/change，决定 checklist 用 2a 还是 2b 节）。与人确认。
+   - G0 的签核语义（v2）＝"域划分方式与负空间被人认可"，只需 domain-map + 产品级 system-context——不要求任何域已摸完。
 
-2. **第一层 · 确定性检查**：`python3 tools/gate.py --gate <G0|G1|G2|G3|CYC-NNN>`。
+2. **第一层 · 确定性检查（六查）**：`python3 tools/gate.py --gate <G0|G1|G2|G3|CYC-NNN>`（含 kb 八查与 change 型覆盖规则）。
    - FAIL 项含"域内 OQ 仍 open"→ **停**，转引 `/arch-decide` 清账后重跑；
    - 其它 FAIL → 逐项修（机械问题直接修，语义问题登 OQ/RSK 后按上一条处理）；
    - 全绿才进第二层。
@@ -35,6 +36,7 @@ generated_by: system-arch-base@<commit>/templates/project-scaffold/.claude/skill
 5. **落账与晋升**（仅 pass 类）：
    - LEDGER 登 `### GATE-<gate>` 块（date/verdict/conditions/scope）；GC 同时把章程与 LEDGER 的 CYC 块转 closed；
    - 按 gate-config `promote`/`promote_to` 晋升 WP 状态（frontmatter + INDEX 同步；升 released 时把被 supersede 的旧版标 `superseded`）；
+   - **GC 后 domain-map 维护**（product）：baseline 型 → 所摸域 coverage 翻 `baselined` + 刷 last-verified/atoms 数；change 型 → 所触域刷 last-verified（滚动文档，行级更新属勘误级）；
    - **释放类门禁（promote_to=released）**：从 `templates/gates/handoff-manifest.yaml` 生成 `handoff/manifest-<gate>-<date>.yaml`（纯清单，引用 GATE 记录，无二次审批语义）；product 模式提醒更新 evolution-roadmap 滚动记录；
    - CHANGELOG append；输出收尾摘要（过了什么门、晋升了什么、交接物在哪、下一步）。
 

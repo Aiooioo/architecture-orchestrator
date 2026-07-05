@@ -1,13 +1,13 @@
 ---
-version: 1
-status: deprecated
-supersedes: null
-superseded_by: 05-glossary.v2.md
+version: 2
+status: active
+supersedes: 05-glossary.v1.md
+superseded_by: null
 created: 2026-07-05
 updated: 2026-07-05
 ---
 
-# 05 · 术语表（glossary）
+# 05 · 术语表（glossary）· v2
 
 | 术语 | 英文 | 定义 |
 |---|---|---|
@@ -35,3 +35,18 @@ updated: 2026-07-05
 | 台账 | LEDGER | 单一决策/风险/周期/门禁记录文件；"当前阶段"由其推导 |
 | 方向持有文档 | direction-holding doc | evolution-roadmap：唯一跨周期滚动维护的 WP |
 | 组合律 | composition law (C1–C4) | 生态母不变量：单一 SoT / 投影或接口 / 无 rival 权威 / 联合 MECE |
+| 事实层 / 观点层 | fact / judgment layer | kb atoms（可盘点可陈旧）vs WP/AD（人签核的判断）；引用不复述 |
+| 原子条目 | atom | 事实层最小单元：一个架构事实一个文件，frontmatter 承载全部坐标 |
+| 领域地图 | domain-map (WP-9) | 域划分 + 覆盖台账（unmapped/mapped/baselined/stale + last-verified），负空间显式 |
+| 渐进式摸底 | progressive baseline | G0 只建索引；baseline 型周期按需摸切片；摸到哪改到哪 |
+| bootstrap 门 | G0 (v2) | 签核语义="划分方式与负空间被人认可"，非全量现状确立 |
+| 周期类型 | cycle kind | baseline（摸切片）/ change（做演进）；覆盖规则：change 域必须已 baselined |
+| 域实例 | domain instance | WP 的域切片文件 `<slug>.<domain>.vN.md`，章程 affected_wps 以 instance 指定 |
+| 受控词表 | taxonomy | kb/_meta/taxonomy.md：planes/kinds/edges 枚举；planes/kinds 增改=方法级决策 |
+| MOC | Map of Content | 每组织轴一张策展页：叙事自由写 + 围栏块由 kb-index.py 生成 |
+| Bases 视图 | Obsidian Bases | .base 声明式实时表格视图，人侧筛选浏览，无生成漂移 |
+| 分层读取协议 | tiered reading protocol | Tier0 直读（index cheap-pass→atom→边遍历）/ Tier1 委派 kb-retriever |
+| 单写者纪律 | single-writer discipline | 只有入口 skill 主 agent 写 vault，一切 subagent 只读 |
+| 断言级溯源 | claim-level provenance | 正文断言标 ^[inferred] / ^[ambiguous]，摸底忠实度的微观落点 |
+| 矛盾标注 | contradiction callout | [!contradiction] 显式标记 + 登 OQ，不静默改写 |
+| kb 八查 | kb lint | kb-index.py 确定性检查：死链/词表/必填/孤儿/陈旧/OQ 引用/索引漂移/围栏漂移 |

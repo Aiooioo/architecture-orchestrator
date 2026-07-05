@@ -14,12 +14,14 @@ generated_by: system-arch-base@<commit>/templates/project-scaffold/.claude/skill
 
 ## 固定步骤
 
-1. **认领变更 + 挂靠**：确认变更来源（人的输入 / gate 条件 / OQ 裁定的返工 / roadmap 过渡步骤）。
-   - product 模式：实质变更必须挂靠一个 `status: open` 的 CYC——没有就先起草章程（`templates/cycles/cycle-charter.v1.md` 实例化到 `cycles/CYC-NNN-<slug>.md`，status: proposed），**停**，提示人走 `/arch-decide` 批准后再继续。
+1. **认领变更 + 挂靠**：确认变更来源（人的输入 / gate 条件 / OQ 裁定的返工 / roadmap 过渡步骤 / domain-map 待摸切片）。
+   - product 模式：实质变更必须挂靠一个 `status: open` 的 CYC——没有就先起草章程（`templates/cycles/cycle-charter.v2.md` 实例化，填 `kind: baseline|change` 与 `domains`；change 型先自查覆盖规则：domains 是否全部 baselined，不满足则改提 baseline 型或混合），**停**，提示人走 `/arch-decide` 批准后再继续。
    - engagement 模式：确认变更属于当前阶段（由 LEDGER 最后一条 GATE 推导）；跨阶段的记 OQ 问人。
+   - **baseline 型周期的主工作 = 摸底**：源材料是代码/配置/监控，走与 /kb-ingest 相同的四段管线（大范围时 fan-out 只读 `kb-extractor` 按模块切片）产出该域 atoms；as-is WP 域实例（`<slug>.<domain>.vN.md`）在 atoms 就绪后按需起草（叙事视图，引用 atoms 不复述）。
 
 2. **定影响半径**（按规则，不凭感觉）：
    - 目标 WP 本体 + 引用它的其它 WP 章节（按 WP 名/AD 编号/NFR 编号 grep）；
+   - 涉及事实变化 → 相关 atoms（经 kb-index.json/graph.json 邻域定位）+ 引用这些 atoms 的 WP 章节；
    - 动组件 → component-model 静态+动态视图 + operational-model 落点 + AOD 构件段；
    - 动 NFR → 引用该 NFR-NNN 的场景/AD/运行模型假设；
    - 动 AD 的 Assumptions → 该 AD 全体 + 其 Implications 波及处。
@@ -37,7 +39,7 @@ generated_by: system-arch-base@<commit>/templates/project-scaffold/.claude/skill
 
 6. **轻量自查**（抓形不抓义，深评审在 gate 面板）：frontmatter 完整、version==文件名、blocked_on↔内联一致、无死链、引导注释在 review 前已删。可跑 `python3 tools/gate.py --gate <下一个 gate>` 提前看缺口（fail 是常态，只看清单）。
 
-7. **销账登记**（必做）：INDEX.md（每个动过的实例一行，version/status 同步）+ CHANGELOG.md（append 一行：日期/改了什么/影响哪些产物）+ LEDGER（新登/销账）。收尾输出摘要：动了哪些文件、登了哪些 OQ/RSK、下一步建议。
+7. **销账登记**（必做）：INDEX.md（每个动过的实例一行，version/status 同步）+ CHANGELOG.md（append 一行：日期/改了什么/影响哪些产物）+ LEDGER（新登/销账）；**触碰过 atoms 则必跑 `python3 tools/kb-index.py`**（完成定义，FAIL=未完成）。收尾输出摘要：动了哪些文件、登了哪些 OQ/RSK、下一步建议。
 
 ## 红线
 

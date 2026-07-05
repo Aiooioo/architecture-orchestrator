@@ -21,8 +21,9 @@
 | `templates/work-products/*.vN.md` | 定义 | 8 类工作产品模板 |
 | `templates/cycles/cycle-charter.vN.md` | 定义 | 演进周期章程模板（product 模式） |
 | `templates/gates/*.vN.md` + `perspectives/` + `handoff-manifest.yaml` | 定义 | 门禁 checklist / 评审视角 / 交接清单模板 |
-| `templates/project-scaffold/` | 定义（投影源） | 项目仓全套骨架，含 4 个项目技能与 `scaffold-manifest.yaml`（定义层/状态层清单） |
-| `tools/gate.py` + `gate-config.json` | 定义（投影源） | 确定性门禁，双剖面 profile |
+| `templates/kb/` | 定义 | 知识库模板族：atom / 双 MOC / taxonomy 种子 / Bases 视图（method/06） |
+| `templates/project-scaffold/` | 定义（投影源） | 项目仓全套骨架，含 5 个项目技能 + 2 只读 agents 与 `scaffold-manifest.yaml`（定义层/状态层清单） |
+| `tools/gate.py` + `gate-config.json` + `kb-index.py` | 定义（投影源） | 确定性门禁（六查）与 kb 索引器/八查 |
 | `.claude/skills/arch-init/` | 定义 | 中枢唯一入口技能 |
 | `INDEX.md` / `CHANGELOG.md` / `LEDGER.md` / `REPOS.md` | 状态 | 资产登记 / 演进史 / 方法级决策台账 / 拓扑 |
 
@@ -31,7 +32,8 @@
 | 入口 | 在哪运行 | 动词 | tie-breaker |
 |---|---|---|---|
 | `/arch-init` | 仅本仓 | 投影：初始化新项目仓（init）或同步定义层更新（sync） | 凡"新开项目 / 把中枢更新推下去"→ 这里；项目内的一切工作 → 项目仓 4 入口 |
-| `/arch-change`（项目仓） | 项目仓 | 推进架构：起草/修订工作产品（带影响半径与涟漪闭合） | 想"做架构工作"→ 它 |
+| `/kb-ingest`（项目仓） | 项目仓 | 喂材料进知识库事实层（四段管线） | "把材料吃进去"→ 它；知识问答不设入口（读取协议直接答） |
+| `/arch-change`（项目仓） | 项目仓 | 推进架构：起草/修订工作产品与 atoms（带影响半径与涟漪闭合） | 想"做架构工作"→ 它 |
 | `/arch-decide`（项目仓） | 项目仓 | 清人决队列：裁 OQ、批 CYC 章程 | 想"知道欠我什么决断 / 裁事"→ 它 |
 | `/arch-gate`（项目仓） | 项目仓 | 过门禁：gate.py + 评审面板 + 人签核 | "阶段/周期感觉做完了"→ 它 |
 | `/arch-status`（项目仓） | 项目仓 | 只读查询 | "只是问问现状"→ 它 |

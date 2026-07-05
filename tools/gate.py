@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
-"""architecture-method 门禁五查（审查者≠作者 · 只读 · 真相在 system-arch-base tools/）。
+"""architecture-method 门禁六查（审查者≠作者 · 只读 · 真相在 system-arch-base tools/）。
 
 用法（在项目仓根目录）:
     python3 tools/gate.py --gate <G0|G1|G2|G3|CYC-NNN>
     python3 tools/gate.py --check-config          # 仅校验配置可解析（中枢自检用）
 退出码: 0=pass, 1=fail。词表与矩阵权威=同目录 gate-config.json。
 
-五查: ①frontmatter/枚举 ②必备 WP 达标（GC 按章程动态） ③阻塞扫描（BLOCKED-ON/ASSUMES/孤儿 OQ/域内 open OQ）
-      ④INDEX 对账 ⑤前置 GATE/CYC 记录。
+六查: ①frontmatter/枚举 ②必备 WP 达标（GC 按章程动态；change 型加 domain-map 覆盖规则）
+      ③阻塞扫描（BLOCKED-ON/ASSUMES/孤儿 OQ/域内 open OQ）④INDEX 对账 ⑤前置 GATE/CYC 记录
+      ⑥kb 八查（kb-index.py --check；无 kb/ 跳过）。
 刻意不做: Mermaid 语法（引 node 破坏零依赖）、跨 WP 语义一致（评审面板职责）。
 """
-import json, pathlib, re, sys
+import json, pathlib, re, subprocess, sys
 
 STATUS_RE = re.compile(r"^(draft|review|released|superseded|baselined@(G0|G1|G2|G3|CYC-\d{3}))$")
 MARK_BLOCKED = re.compile(r"\[BLOCKED-ON:\s*(OQ-\d{3})\]")
@@ -46,14 +47,24 @@ def parse_affected_wps(text):
                 break
             mi = re.match(r"^\s*-\s*wp:\s*(\S+)", line)
             if mi:
-                cur = {"wp": mi.group(1), "target_version": None, "min_status": "review"}
+                cur = {"wp": mi.group(1), "target_version": None, "min_status": "review", "instance": None}
                 items.append(cur)
                 continue
-            for key in ("target_version", "min_status"):
+            for key in ("target_version", "min_status", "instance"):
                 mk = re.match(rf"^\s+{key}:\s*(\S+)", line)
                 if mk and cur is not None:
                     cur[key] = mk.group(1)
     return items
+
+
+def parse_domain_map(path):
+    """domain-map 覆盖台账行 → {domain: coverage}（列序固定 | domain | coverage | ... |）。"""
+    out = {}
+    for line in path.read_text().splitlines():
+        m = re.match(r"^\|\s*([\w-]+)\s*\|\s*(unmapped|mapped|baselined|stale)\s*\|", line)
+        if m and m.group(1) not in ("domain",):
+            out[m.group(1)] = m.group(2)
+    return out
 
 
 def parse_ledger_blocks(text):
@@ -74,12 +85,13 @@ def status_base(status):
     return status.split("@", 1)[0]
 
 
-def latest(root, wp_dir, slug, want_version=None):
-    """该 WP 的目标文件：want_version 指定版本，否则取最大 vN。返回 (path|None, N)。"""
+def latest(root, wp_dir, slug, want_version=None, instance=None):
+    """该 WP（或其域实例）的目标文件：want_version 指定版本，否则取最大 vN。返回 (path|None, N)。"""
     d = root / wp_dir
+    stem = f"{slug}.{instance}" if instance else slug
     best, best_n = None, -1
-    for p in sorted(d.glob(f"{slug}.v*.md")) if d.is_dir() else []:
-        mv = re.match(rf"{re.escape(slug)}\.v(\d+)\.md$", p.name)
+    for p in sorted(d.glob(f"{stem}.v*.md")) if d.is_dir() else []:
+        mv = re.match(rf"{re.escape(stem)}\.v(\d+)\.md$", p.name)
         if not mv:
             continue
         n = int(mv.group(1))
@@ -173,6 +185,24 @@ def main():
         cfm = parse_frontmatter(charter.read_text())
         if cfm.get("status") != "open":
             fails.append(f"②章程 {charter.name} status={cfm.get('status')!r} ≠ open（未获批或已关闭）")
+        # 覆盖规则（v2）：change 型的 domains 必须全部 baselined；baseline 型豁免；无 kind 视作 v1 章程 grandfather
+        ckind = cfm.get("kind", "")
+        if ckind == "change":
+            cdomains = re.findall(r"[\w-]+", cfm.get("domains", "")) or []
+            if not cdomains:
+                fails.append(f"②change 型章程 {charter.name} 未声明 domains")
+            dm_path, _ = latest(root, cfg["wp_dirs"].get("domain-map", "work-products/00-domain-map"), "domain-map")
+            if dm_path is None:
+                fails.append("②覆盖规则无从检查：缺 domain-map")
+            else:
+                coverage = parse_domain_map(dm_path)
+                for d in cdomains:
+                    if coverage.get(d) != "baselined":
+                        fails.append(f"②覆盖规则: 域 {d} coverage={coverage.get(d, '不在台账')} ≠ baselined（先开 baseline 周期）")
+        elif ckind == "baseline":
+            pass
+        else:
+            warns.append(f"②章程 {charter.name} 无 kind 字段（v1 格式 grandfather，跳过覆盖规则）")
         awps = parse_affected_wps(charter.read_text())
         if not awps:
             fails.append(f"②章程 {charter.name} affected_wps 为空/不可解析")
@@ -181,9 +211,10 @@ def main():
             if not wp_dir:
                 fails.append(f"②章程引用未知 WP: {it['wp']}")
                 continue
-            p, n = latest(root, wp_dir, it["wp"], it["target_version"])
+            label = f"{it['wp']}{'.' + it['instance'] if it['instance'] else ''}"
+            p, n = latest(root, wp_dir, it["wp"], it["target_version"], it["instance"])
             if p is None:
-                fails.append(f"②{it['wp']} 目标版本 v{it['target_version']} 不存在")
+                fails.append(f"②{label} 目标版本 v{it['target_version']} 不存在")
                 continue
             scope_files.append(p)
             st = status_base(fm_cache.get(p, parse_frontmatter(p.read_text())).get("status", "draft"))
@@ -280,6 +311,20 @@ def main():
     if ledger.get(f"GATE-{gate_id}"):
         warns.append(f"⑤GATE-{gate_id} 已有记录（重跑门禁？签核前请人知悉）")
 
+    # ⑥ kb 八查（无 kb/ 跳过）
+    if (root / "kb").is_dir():
+        kb_tool = pathlib.Path(__file__).parent / "kb-index.py"
+        r = subprocess.run([sys.executable, str(kb_tool), "--check"], capture_output=True, text=True, cwd=root)
+        for line in r.stdout.splitlines():
+            if line.startswith("WARN"):
+                warns.append("⑥" + line[5:])
+        if r.returncode != 0:
+            for line in r.stdout.splitlines():
+                if line.startswith("FAIL"):
+                    fails.append("⑥" + line[5:])
+            if not any(f.startswith("⑥") for f in fails):
+                fails.append("⑥kb-index.py --check 失败: " + (r.stderr.strip()[:120] or "未知错误"))
+
     for w in warns:
         print(f"WARN {w}")
     if fails:
@@ -287,7 +332,7 @@ def main():
             print(f"FAIL {f}")
         print(f"== GATE FAIL ({len(fails)} 项) ==")
         sys.exit(1)
-    print(f"== GATE PASS ({gate_id} 五查全过；promote_to={spec.get('promote_to')}，晋升由 /arch-gate 在人签核后执行) ==")
+    print(f"== GATE PASS ({gate_id} 六查全过；promote_to={spec.get('promote_to')}，晋升由 /arch-gate 在人签核后执行) ==")
     sys.exit(0)
 
 

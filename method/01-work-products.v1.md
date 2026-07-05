@@ -1,8 +1,8 @@
 ---
 version: 1
-status: active
+status: deprecated
 supersedes: null
-superseded_by: null
+superseded_by: 01-work-products.v2.md
 created: 2026-07-05
 updated: 2026-07-05
 ---

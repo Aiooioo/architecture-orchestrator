@@ -15,7 +15,8 @@ generated_by: system-arch-base@<commit>/templates/project-scaffold/.claude/skill
 1. 读 `project.yaml`（name/mode/hub_ref）+ `LEDGER.md` + `INDEX.md` + `CHANGELOG.md` 最近几条。**不读不必要的 WP 正文，不改任何文件。**
 
 2. 推导并汇报（简洁，一屏内）：
-   - **当前位置**：LEDGER 最后一条 GATE 记录 + mode → engagement 报"当前阶段"；product 报"baseline 状态 + 在途周期（open CYC）+ baseline 年龄（GATE-G0 距今）"；
+   - **当前位置**：LEDGER 最后一条 GATE 记录 + mode → engagement 报"当前阶段"；product 报"G0 状态 + 在途周期（open CYC，含 kind）"；
+   - **知识覆盖概览**（product，读 domain-map 台账 + `kb/_meta/kb-index.json`）：各域 coverage 分布、最老 baselined 域年龄（超阈值提示 refresh）、atoms 总数与 stale/observed 占比；
    - **在途工作**：INDEX 中 status ∈ draft/review 的实例；product 模式加报 as-is（released）/ to-be（在途）分布；
    - **欠人的账**：open OQ 数（blocking 单列）+ proposed 章程数 → 提示 `/arch-decide`；
    - **风险敞口**：open RSK 数与最重一条；
