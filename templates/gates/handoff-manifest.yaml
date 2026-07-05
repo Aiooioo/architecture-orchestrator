@@ -1,0 +1,37 @@
+# handoff manifest 模板 — 释放类 gate（G3 / GC）签核后由 /arch-gate 生成到项目仓 handoff/
+# 性质：纯清单（冻结接口的载体），无审批语义——审批已经由 GATE-* 签核完成，这里只引用它。
+# 下游（实现仓）按引用消费 status=released 的产物：不复述、不自存改写副本。
+
+handoff:
+  project: <project-name>
+  mode: <engagement|product>
+  gate: <GATE-G3 | GATE-CYC-NNN>          # 审批依据（项目 LEDGER 中的签核记录 ID）
+  gate_record: LEDGER.md#<GATE-*>          # 引用，不复制签核内容
+  date: <date>
+  source_pin: <project-repo-name>@<commit> # 本清单生成时项目仓的提交钉
+  hub_pin: system-arch-base@<commit>       # 生成时 project.yaml 中的 hub_ref
+
+  # 交付物清单：只列 status=released 的版本
+  work_products:
+    - path: work-products/01-system-context/system-context.v2.md
+      wp: system-context
+      version: 2
+      status: released
+    # …
+
+  decisions:
+    - path: decisions/AD-001-<slug>.md
+      ad: AD-001
+      decision_status: decided
+    # …
+
+  # 移交下游的事项（G3 viability 章节 / GC 周期对账中 disposition=移交 的条目）
+  handed_over:
+    - id: RSK-004
+      summary: <一句话>
+      note: <下游需要知道什么>
+
+  # 消费说明
+  consumer_notes: |
+    - 只消费本清单所列版本；后续版本以新的 handoff manifest 为准。
+    - 对清单内容有疑问 → 回项目仓登 OQ，不要在实现仓自行改写架构产物。

@@ -1,0 +1,80 @@
+{
+  "status_order": { "draft": 0, "review": 1, "baselined": 2, "released": 3 },
+  "status_enum_extra": ["superseded"],
+  "required_fm_wp": ["wp", "version", "status", "created", "updated"],
+  "required_fm_ad": ["wp", "ad", "version", "status", "decision_status", "created", "updated"],
+  "decision_status_enum": ["proposed", "decided", "superseded"],
+  "required_oq_fields_when_open": ["severity", "scope", "options", "recommend"],
+  "wp_dirs": {
+    "system-context": "work-products/01-system-context",
+    "architecture-overview": "work-products/02-architecture-overview",
+    "component-model": "work-products/03-component-model",
+    "operational-model": "work-products/04-operational-model",
+    "nfr-catalog": "work-products/05-nfr-catalog",
+    "key-scenario": "work-products/06-key-scenarios",
+    "evolution-roadmap": "work-products/07-evolution-roadmap"
+  },
+  "profiles": {
+    "engagement": {
+      "G0": {
+        "prereq": null,
+        "requires": {
+          "system-context": "review", "architecture-overview": "review",
+          "component-model": "review", "operational-model": "review",
+          "nfr-catalog": "review"
+        },
+        "promote": ["system-context", "architecture-overview", "component-model", "operational-model", "nfr-catalog"],
+        "promote_to": "released",
+        "proposed_ad": "warn"
+      },
+      "G1": {
+        "prereq": null,
+        "requires": { "system-context": "review", "key-scenario": "review", "nfr-catalog": "draft" },
+        "promote": ["system-context", "key-scenario"],
+        "promote_to": "baselined",
+        "proposed_ad": "ignore"
+      },
+      "G2": {
+        "prereq": "GATE-G1",
+        "requires": {
+          "system-context": "baselined", "key-scenario": "baselined",
+          "architecture-overview": "review", "component-model": "review",
+          "operational-model": "review", "nfr-catalog": "review"
+        },
+        "promote": ["architecture-overview", "component-model", "operational-model", "nfr-catalog"],
+        "promote_to": "baselined",
+        "proposed_ad": "warn"
+      },
+      "G3": {
+        "prereq": "GATE-G2",
+        "requires": {
+          "system-context": "baselined", "key-scenario": "baselined",
+          "architecture-overview": "baselined", "component-model": "baselined",
+          "operational-model": "baselined", "nfr-catalog": "baselined"
+        },
+        "promote": ["system-context", "key-scenario", "architecture-overview", "component-model", "operational-model", "nfr-catalog"],
+        "promote_to": "released",
+        "proposed_ad": "fail"
+      }
+    },
+    "product": {
+      "G0": {
+        "prereq": null,
+        "requires": {
+          "system-context": "review", "architecture-overview": "review",
+          "component-model": "review", "operational-model": "review",
+          "nfr-catalog": "review", "evolution-roadmap": "draft"
+        },
+        "promote": ["system-context", "architecture-overview", "component-model", "operational-model", "nfr-catalog"],
+        "promote_to": "released",
+        "proposed_ad": "warn"
+      },
+      "GC": {
+        "prereq": "GATE-G0",
+        "dynamic_from_charter": true,
+        "promote_to": "released",
+        "proposed_ad": "warn"
+      }
+    }
+  }
+}

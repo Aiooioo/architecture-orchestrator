@@ -1,0 +1,58 @@
+# scaffold-manifest — 定义层/状态层权威清单（/arch-init 的投影依据与双向校验范围）
+# source 相对中枢仓根；target 相对项目仓根。
+#
+# definition：sync 时从中枢覆盖重投影；项目仓不得就地改语义；
+#             规范化 diff（剥 generated_by 行）必须与源逐字一致（2a）。
+# state_seed：init 时播种一次，此后为项目自有状态，sync 永不覆盖（2b：只允许保全/加性）。
+
+definition:
+  - { source: templates/project-scaffold/AGENTS.md,        target: AGENTS.md }
+  - { source: templates/project-scaffold/CLAUDE.md,        target: CLAUDE.md }
+  - { source: templates/project-scaffold/HUMAN-GUIDE.md,   target: HUMAN-GUIDE.md }
+  - { source: tools/gate.py,                               target: tools/gate.py }
+  - { source: tools/gate-config.json,                      target: tools/gate-config.json }
+  - { source: templates/project-scaffold/.claude/skills/arch-change/SKILL.md, target: .claude/skills/arch-change/SKILL.md }
+  - { source: templates/project-scaffold/.claude/skills/arch-decide/SKILL.md, target: .claude/skills/arch-decide/SKILL.md }
+  - { source: templates/project-scaffold/.claude/skills/arch-gate/SKILL.md,   target: .claude/skills/arch-gate/SKILL.md }
+  - { source: templates/project-scaffold/.claude/skills/arch-status/SKILL.md, target: .claude/skills/arch-status/SKILL.md }
+  # 模板（arch-change/arch-gate 的实例化来源）
+  - { source: templates/work-products/system-context.v1.md,        target: templates/work-products/system-context.v1.md }
+  - { source: templates/work-products/architecture-overview.v1.md, target: templates/work-products/architecture-overview.v1.md }
+  - { source: templates/work-products/component-model.v1.md,       target: templates/work-products/component-model.v1.md }
+  - { source: templates/work-products/operational-model.v1.md,     target: templates/work-products/operational-model.v1.md }
+  - { source: templates/work-products/nfr-catalog.v1.md,           target: templates/work-products/nfr-catalog.v1.md }
+  - { source: templates/work-products/key-scenario.v1.md,          target: templates/work-products/key-scenario.v1.md }
+  - { source: templates/work-products/architectural-decision.v1.md, target: templates/work-products/architectural-decision.v1.md }
+  - { source: templates/work-products/evolution-roadmap.v1.md,     target: templates/work-products/evolution-roadmap.v1.md }
+  - { source: templates/cycles/cycle-charter.v1.md,                target: templates/cycles/cycle-charter.v1.md }
+  - { source: templates/gates/gate-g0-baseline.v1.md,              target: templates/gates/gate-g0-baseline.v1.md }
+  - { source: templates/gates/gate-g1-context.v1.md,               target: templates/gates/gate-g1-context.v1.md }
+  - { source: templates/gates/gate-g2-design.v1.md,                target: templates/gates/gate-g2-design.v1.md }
+  - { source: templates/gates/gate-g3-release.v1.md,               target: templates/gates/gate-g3-release.v1.md }
+  - { source: templates/gates/gate-gc-cycle.v1.md,                 target: templates/gates/gate-gc-cycle.v1.md }
+  - { source: templates/gates/perspectives/security.md,            target: templates/gates/perspectives/security.md }
+  - { source: templates/gates/perspectives/performance.md,         target: templates/gates/perspectives/performance.md }
+  - { source: templates/gates/perspectives/operability.md,         target: templates/gates/perspectives/operability.md }
+  - { source: templates/gates/perspectives/data.md,                target: templates/gates/perspectives/data.md }
+  - { source: templates/gates/handoff-manifest.yaml,               target: templates/gates/handoff-manifest.yaml }
+
+state_seed:
+  - { source: templates/project-scaffold/project.yaml,   target: project.yaml }
+  - { source: templates/project-scaffold/README.md,      target: README.md }
+  - { source: templates/project-scaffold/REPOS.md,       target: REPOS.md }
+  - { source: templates/project-scaffold/INDEX.md,       target: INDEX.md }
+  - { source: templates/project-scaffold/CHANGELOG.md,   target: CHANGELOG.md }
+  - { source: templates/project-scaffold/LEDGER.md,      target: LEDGER.md }
+
+state_dirs:   # init 时创建空目录（.gitkeep），全部为状态层
+  - work-products/01-system-context
+  - work-products/02-architecture-overview
+  - work-products/03-component-model
+  - work-products/04-operational-model
+  - work-products/05-nfr-catalog
+  - work-products/06-key-scenarios
+  - work-products/07-evolution-roadmap
+  - decisions
+  - cycles
+  - gates
+  - handoff

@@ -1,0 +1,5 @@
+# project.yaml — 身份与钉版，仅此而已（阶段/周期状态由 LEDGER 推导，不放这里）
+name: "{{PROJECT_NAME}}"
+mode: "{{MODE}}"                     # engagement | product
+hub_ref: "system-arch-base@{{HUB_COMMIT}}"
+initialized: "{{DATE}}"
