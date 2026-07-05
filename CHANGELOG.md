@@ -7,3 +7,7 @@
 - 投影体系：`templates/project-scaffold/` 为项目仓投影源，`/arch-init`（init|sync）实例化 landing-procedure.v2 双向完整性校验。
 - 入口集：中枢 `/arch-init` + 项目仓 `/arch-change` `/arch-decide` `/arch-gate` `/arch-status`（动词键控 MECE）。
 - 兼容声明：首版，无旧产物。
+
+## 2026-07-05 · 勘误：gate.py project.yaml 解析
+
+- 剥引号与行内注释（arch-demo 端到端干跑发现）；勘误级，不升版。验证记录：engagement 全链路（G1 拦截→裁决→PASS→签核→G2 前置链）+ product GC 动态章程解析 + sync 双向守卫（漂移预检/2a/2b）均通过。
