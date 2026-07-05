@@ -29,4 +29,5 @@ agents-orchestrator            system-arch-base（本仓）
 
 | 项目仓（名称） | mode | 初始化日期 | 状态 |
 |---|---|---|---|
-| （尚无，`/arch-init` 成功后在此登记） | | | |
+| arch-demo | engagement | 2026-07-05 | active（方法验证示例：已过 G1） |
+| arch-demo-prod | product | 2026-07-05 | active（方法验证示例：CYC-001 GC 干跑） |

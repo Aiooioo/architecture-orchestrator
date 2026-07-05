@@ -116,8 +116,12 @@ def main():
     if not py.is_file():
         print("FAIL 项目根缺 project.yaml（须在项目仓根目录运行）")
         sys.exit(1)
-    meta = {k.strip(): v.strip() for k, v in
-            (l.split(":", 1) for l in py.read_text().splitlines() if ":" in l)}
+    meta = {}
+    for l in py.read_text().splitlines():
+        l = l.split("#", 1)[0]
+        if ":" in l:
+            k, v = l.split(":", 1)
+            meta[k.strip()] = v.strip().strip("\"'")
     mode = meta.get("mode", "")
     profile = cfg["profiles"].get(mode)
     if not profile:
